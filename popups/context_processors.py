@@ -1,4 +1,10 @@
-class Popups:
+class Popups(object):
+    """
+    Main popup object that returns True for everything not marked false in
+    the session.  That includes any nonsense session variable.
+
+    Check your spelling
+    """
     def __init__(self, request):
         self.request = request
 
