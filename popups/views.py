@@ -1,10 +1,12 @@
 from models import PopupRecord
 import datetime
+from django.contrib.auth.models import User
 
 class PopupMixin(object):
     popup_name = None
     popup_message = None
     view_once = False
+    queryset = None
 
     def get_popup_id_tag(self):
         return self.popup_name
@@ -15,6 +17,8 @@ class PopupMixin(object):
     def get_context_data(self, *args, **kwargs):
         context = super(PopupMixin, self).get_context_data(*args, **kwargs)
         if self.popup_name and self.request.user.is_authenticated():
+            if self.queryset and self.request.user not in self.queryset:
+                return context
             # retrieve a record of the popup
             popup, created = PopupRecord.objects.get_or_create(
                     popup_name=self.popup_name,
